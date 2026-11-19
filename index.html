@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Portal | GCTU</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f2f4f8;color:#222}
+header{background:#0b2a5b;color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+header h1{font-size:20px} header span{color:#ffcc00}
+nav{background:#fff;padding:12px 24px;display:flex;gap:10px;box-shadow:0 2px 6px rgba(0,0,0,.08);flex-wrap:wrap}
+nav button{border:none;background:none;font-size:15px;cursor:pointer;padding:8px 12px;border-radius:6px}
+nav button.active{background:#0b2a5b;color:#fff}
+.container{max-width:1000px;margin:24px auto;padding:0 16px}
+.card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:18px}.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.stat h3{font-size:28px;color:#0b2a5b} .stat p{color:#666}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #eee;font-size:14px}
+th{background:#f8f9ff}
+input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+.btn{background:#0b2a5b;color:#fff;border:none;padding:12px 18px;border-radius:8px;cursor:pointer;width:100%;font-size:16px}
+.hidden{display:none}
+.login-wrap{max-width:420px;margin:40px auto}
+.badge{background:#e6f4ea;color:#1a7a2e;padding:4px 10px;border-radius:20px;font-size:12px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tabs button{flex:1;padding:10px;border:1px solid #0b2a5b;background:#fff;border-radius:8px;cursor:pointer;font-weight:bold}
+.tabs button.active{background:#0b2a5b;color:#fff}
+.msg{font-size:13px;margin-top:8px;text-align:center}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><div id="loginPage" class="login-wrap">
+<div class="card">
+<h1 style="color:#0b2a5b">GCTU Student Portal</h1>
+<p style="margin:8px 0 16px;color:#666">Kelvin McHoover - kelvinmchoover.me</p>
+<div class="tabs">
+<button id="tabLogin" class="active" onclick="switchTab('login')">Login</button>
+<button id="tabReg" onclick="switchTab('reg')">Register</button>
+</div>
+<div id="loginForm">
+<label>Student ID</label>
+<input id="sid" placeholder="e.g. 1695673290" value="1695673290">
+<label>Password</label>
+<input id="pwd" type="password" placeholder="Enter password">
+<button class="btn" onclick="login()">Login to Portal</button>
+<p id="loginMsg" class="msg"></p>
+<p style="font-size:12px;color:#888;margin-top:12px;text-align:center">Demo: Kelvin - ID 1695673290 / any password<br>Or Register a new account below</p>
+</div><div id="regForm" class="hidden">
+<label>Full Name</label>
+<input id="regName" placeholder="e.g. Ama Mensah">
+<label>Student ID</label>
+<input id="regId" placeholder="e.g. 1695673291">
+<label>Programme</label>
+<input id="regProg" placeholder="e.g. BSc Information Technology">
+<label>Password</label>
+<input id="regPwd" type="password" placeholder="Create password">
+<button class="btn" onclick="register()">Create Account</button>
+<p id="regMsg" class="msg"></p>
+</div>
+</div>
+</div>
+<div id="mainPage" class="hidden">
+<header><h1>GCTU <span>Student Portal</span></h1><div><span id="headerName">Kelvin McHoover</span> - <span id="headerId">1695673290</span> - <a href="#" onclick="logout()" style="color:#ffcc00">Logout</a></div></header>
+<nav>
+<button class="active" onclick="show('dashboard',this)">Dashboard</button>
+<button onclick="show('courses',this)">My Courses</button>
+<button onclick="show('grades',this)">Grades</button>
+<button onclick="show('timetable',this)">Timetable</button>
+<button onclick="show('fees',this)">Fees</button>
+</nav><div class="container">
+<div id="dashboard">
+<div class="card"><h2>Welcome back, <span id="welcomeName">Kelvin</span></h2><p style="margin-top:8px;color:#666"><span id="welcomeProg">BSc Information Technology</span> - Level 300 - Second Semester</p></div>
+<div class="grid">
+<div class="card stat"><h3>5</h3><p>Courses This Semester</p></div>
+<div class="card stat"><h3>3.62</h3><p>Current GPA</p></div>
+<div class="card stat"><h3>GHS 0.00</h3><p>Fees Balance - Paid</p></div>
+</div>
+<div class="card"><h3>Announcements</h3><p style="margin-top:10px">- Assignment 4: Cloud Website Deployment - Due soon. Website live at https://kelvinmchoover.me</p><p style="margin-top:8px">- Mid-semester exams start next Monday. Check timetable.</p><p style="margin-top:8px">- GCTU Tech Week - Register at the SRC office.</p></div>
+</div>
+<div id="courses" class="hidden">
+<div class="card"><h3>My Courses - <span class="userNameDisplay">Kelvin McHoover</span></h3>
+<table><tr><th>Code</th><th>Course</th><th>Lecturer</th><th>Status</th></tr>
+<tr><td>IT 301</td><td>Cloud Computing</td><td>Dr. Mensah</td><td><span class="badge">In Progress</span></td></tr>
+<tr><td>IT 303</td><td>Web Technologies</td><td>Mr. Owusu</td><td><span class="badge">In Progress</span></td></tr>
+<tr><td>IT 305</td><td>Database Systems</td><td>Mrs. Boateng</td><td><span class="badge">In Progress</span></td></tr>
+<tr><td>IT 307</td><td>Network Security</td><td>Dr. Asare</td><td><span class="badge">In Progress</span></td></tr>
+<tr><td>IT 309</td><td>Software Engineering</td><td>Mr. Appiah</td><td><span class="badge">In Progress</span></td></tr>
+</table></div>
+</div><div id="grades" class="hidden">
+<div class="card"><h3>Grades - <span class="userNameDisplay">Kelvin McHoover</span></h3>
+<table><tr><th>Course</th><th>Grade</th><th>Credits</th></tr>
+<tr><td>Cloud Computing</td><td>A</td><td>3</td></tr>
+<tr><td>Web Technologies</td><td>A-</td><td>3</td></tr>
+<tr><td>Database Systems</td><td>B+</td><td>3</td></tr>
+<tr><td>Network Security</td><td>A</td><td>3</td></tr>
+<tr><td>Software Engineering</td><td>B+</td><td>3</td></tr>
+</table><p style="margin-top:12px"><b>GPA: 3.62</b> - CGPA: 3.58</p></div>
+</div>
+<div id="timetable" class="hidden">
+<div class="card"><h3>Class Timetable</h3>
+<table><tr><th>Day</th><th>Time</th><th>Course</th><th>Room</th></tr>
+<tr><td>Monday</td><td>9:00 - 11:00</td><td>Cloud Computing</td><td>Lab 3</td></tr>
+<tr><td>Tuesday</td><td>11:00 - 1:00</td><td>Web Technologies</td><td>Lab 1</td></tr>
+<tr><td>Wednesday</td><td>9:00 - 11:00</td><td>Database Systems</td><td>Room 201</td></tr>
+<tr><td>Thursday</td><td>1:00 - 3:00</td><td>Network Security</td><td>Lab 2</td></tr>
+<tr><td>Friday</td><td>10:00 - 12:00</td><td>Software Engineering</td><td>Room 105</td></tr>
+</table></div>
+</div>
+<div id="fees" class="hidden">
+<div class="card"><h3>Fees - <span class="userNameDisplay">Kelvin McHoover</span></h3>
+<p style="margin-top:10px">Total Fees: <b>GHS 5,400.00</b></p>
+<p style="margin-top:6px">Amount Paid: <b>GHS 5,400.00</b></p>
+<p style="margin-top:6px">Balance: <b style="color:green">GHS 0.00 - PAID IN FULL</b></p>
+<p style="margin-top:12px;color:#666;font-size:13px">Receipt: GCTU/2026/001234 - Paid via Mobile Money</p>
+</div>
+</div>
+</div>
+</div><script>
+let users=JSON.parse(localStorage.getItem('gctu_users')||'{}');
+if(!users['1695673290']){users['1695673290']={name:'Kelvin McHoover',prog:'BSc Information Technology',pwd:'1234'};localStorage.setItem('gctu_users',JSON.stringify(users));}
+function switchTab(t){document.getElementById('loginForm').classList.toggle('hidden',t!=='login');document.getElementById('regForm').classList.toggle('hidden',t!=='reg');document.getElementById('tabLogin').classList.toggle('active',t==='login');document.getElementById('tabReg').classList.toggle('active',t==='reg');}
+function login(){let id=document.getElementById('sid').value.trim();let pwd=document.getElementById('pwd').value;let u=users[id];if(!u){document.getElementById('loginMsg').textContent='User not found. Please Register first.';document.getElementById('loginMsg').style.color='red';return;}if(id==='1695673290'){showPortal(u,id);return;}if(u.pwd!==pwd){document.getElementById('loginMsg').textContent='Wrong password!';document.getElementById('loginMsg').style.color='red';return;}showPortal(u,id);}function register(){let n=document.getElementById('regName').value.trim();let id=document.getElementById('regId').value.trim();let pr=document.getElementById('regProg').value.trim()||'BSc Information Technology';let pw=document.getElementById('regPwd').value;if(!n||!id||!pw){document.getElementById('regMsg').textContent='Fill all fields!';document.getElementById('regMsg').style.color='red';return;}users[id]={name:n,prog:pr,pwd:pw};localStorage.setItem('gctu_users',JSON.stringify(users));document.getElementById('regMsg').textContent='Account created! Now Login.';document.getElementById('regMsg').style.color='green';document.getElementById('sid').value=id;switchTab('login');}
+function showPortal(u,id){document.getElementById('loginPage').classList.add('hidden');document.getElementById('mainPage').classList.remove('hidden');document.getElementById('headerName').textContent=u.name;document.getElementById('headerId').textContent=id;document.getElementById('welcomeName').textContent=u.name.split(' ')[0];document.getElementById('welcomeProg').textContent=u.prog;document.querySelectorAll('.userNameDisplay').forEach(e=>e.textContent=u.name);}
+function show(id,btn){['dashboard','courses','grades','timetable','fees'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function logout(){document.getElementById('mainPage').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');}
+</script>
+</body>
+</html>
